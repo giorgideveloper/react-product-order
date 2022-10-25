@@ -53,7 +53,7 @@ function Cart() {
 									<td>{item.name}</td>
 									<td>${item.price}</td>
 									<td>{item.qty}</td>
-									<td>${item.price * item.qty}</td>
+									<td>${(item.price * item.qty).toFixed(2)}</td>
 									<td>
 										<AiFillDelete />
 									</td>
@@ -91,7 +91,7 @@ function Cart() {
 								placeholder='0.00'
 							/>
 						</Col>
-						<h4>Total Price: {sum(total)}</h4>
+						<h4>Total Price: ${sum(total).toFixed(2)}</h4>
 					</Row>
 				</div>
 			</div>
