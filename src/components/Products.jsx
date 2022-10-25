@@ -5,6 +5,7 @@ import Col from 'react-bootstrap/Col';
 import { useSelector, useDispatch } from 'react-redux';
 import { getProductsRedux } from '../redux/productsRedux';
 import { useEffect } from 'react';
+import { addProduct } from '../redux/cartRedux';
 
 function Products() {
 	const myProducts = useSelector(state => state.products.products);
@@ -13,6 +14,10 @@ function Products() {
 	useEffect(() => {
 		dispatch(getProductsRedux());
 	}, [dispatch]);
+
+	const addProductToCard = item => {
+		dispatch(addProduct({ ...item, qty: 1 }));
+	};
 
 	return (
 		<>
@@ -35,7 +40,6 @@ function Products() {
 					}}
 				>
 					<Row className='justify-content-center'>
-						{/* {myProducts.map(item => console.log(item))} */}
 						{myProducts.map(item => (
 							<Col
 								key={item.id}
@@ -45,7 +49,10 @@ function Products() {
 								className='mt-1 mb-1 pe-auto'
 								style={{ cursor: 'pointer' }}
 							>
-								<div className='card h-100 rounded border-0 shadow product '>
+								<div
+									className='card h-100 rounded border-0 shadow product '
+									onClick={() => addProductToCard(item)}
+								>
 									{' '}
 									<img src={item.image} alt='card' className='w-100' />
 									<span className='badge bg-primary rounded-pill shadow position-absolute m-2'>

@@ -1,40 +1,21 @@
 import { CiShoppingBasket } from 'react-icons/ci';
+import { AiFillDelete } from 'react-icons/ai';
 import Table from 'react-bootstrap/Table';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import { useSelector } from 'react-redux';
 
 function Cart() {
+	const cart = useSelector(state => state.cart.cart);
+	const total = cart.map(item => item.price * item.qty);
+
+	const sum = numbers => {
+		return numbers.reduce((first, second) => {
+			return first + second;
+		}, 0);
+	};
 	return (
 		<>
-			{/* <Table striped bordered hover variant='light'>
-							<thead>
-								<tr>
-									<th>#</th>
-									<th>First Name</th>
-									<th>Last Name</th>
-									<th>Username</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>1</td>
-									<td>Mark</td>
-									<td>Otto</td>
-									<td>@mdo</td>
-								</tr>
-								<tr>
-									<td>2</td>
-									<td>Jacob</td>
-									<td>Thornton</td>
-									<td>@fat</td>
-								</tr>
-								<tr>
-									<td>3</td>
-									<td colSpan={2}>Larry the Bird</td>
-									<td>@twitter</td>
-								</tr>
-							</tbody>
-						</Table> */}
 			<div
 				className='card border-0 shadow rounded order-card'
 				style={{ minHeight: '608px' }}
@@ -54,6 +35,32 @@ function Cart() {
 					}}
 				>
 					<p className='text-center fw-bold mt-5 fs-3 '>items in cart!</p>
+					<Table striped bordered hover variant='light'>
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>Name</th>
+								<th>Price</th>
+								<th>Qty</th>
+								<th>Subtotal</th>
+								<th>Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							{cart.map(item => (
+								<tr key={item.id}>
+									<td>{item.id}</td>
+									<td>{item.name}</td>
+									<td>${item.price}</td>
+									<td>{item.qty}</td>
+									<td>${item.price * item.qty}</td>
+									<td>
+										<AiFillDelete />
+									</td>
+								</tr>
+							))}
+						</tbody>
+					</Table>
 				</div>
 				<div className='card-footer bg-white'>
 					<Row>
@@ -84,6 +91,7 @@ function Cart() {
 								placeholder='0.00'
 							/>
 						</Col>
+						<h4>Total Price: {sum(total)}</h4>
 					</Row>
 				</div>
 			</div>
