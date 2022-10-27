@@ -1,11 +1,16 @@
 import { CiShoppingBasket } from 'react-icons/ci';
-import { AiFillDelete } from 'react-icons/ai';
+import {
+	AiFillDelete,
+	AiOutlineMinusCircle,
+	AiOutlinePlusCircle,
+} from 'react-icons/ai';
 import Table from 'react-bootstrap/Table';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useSelector } from 'react-redux';
-import { removeItem } from '../redux/cartRedux';
+import { addProduct, cancelProduct, removeItem } from '../redux/cartRedux';
 import { useDispatch } from 'react-redux';
+import { Badge } from 'react-bootstrap';
 
 function Cart() {
 	const dispatch = useDispatch();
@@ -17,11 +22,11 @@ function Cart() {
 			return first + second;
 		}, 0);
 	};
-	const handleDelete = id => {
-		console.log(id);
-		const myCart = cart.filter(item => item.id !== id);
-
-		console.log(myCart);
+	const addProductToCard = item => {
+		dispatch(addProduct({ ...item, qty: 1 }));
+	};
+	const cancelProductToCard = item => {
+		dispatch(cancelProduct({ ...item, qty: 1 }));
 	};
 	return (
 		<>
@@ -33,6 +38,9 @@ function Cart() {
 					<h3>
 						<CiShoppingBasket style={{ fontSize: '1.5em', color: 'red' }} />
 						Cart
+						<Badge bg='success' className='ms-2 shadow-sm rounded-4'>
+							New
+						</Badge>
 					</h3>
 				</div>
 				<div
@@ -61,13 +69,38 @@ function Cart() {
 									<td>{item.id}</td>
 									<td>{item.name}</td>
 									<td>${item.price}</td>
-									<td>{item.qty}</td>
+									<td className='text-center w-25'>
+										<div className='input-group'>
+											<button className='btn btn-sm btn-secondary px-1'>
+												<AiOutlineMinusCircle
+													className='fs-5'
+													onClick={() => cancelProductToCard(item)}
+												/>
+											</button>
+											<input
+												type='number'
+												min='1'
+												className='form-control py-0 qty-input text-center'
+												disabled
+												value={item.qty}
+											/>
+											<button className='btn btn-sm btn-secondary px-1'>
+												<AiOutlinePlusCircle
+													className='fs-5'
+													onClick={() => addProductToCard(item)}
+												/>
+											</button>
+										</div>
+									</td>
 									<td>${(item.price * item.qty).toFixed(2)}</td>
-									<td>
-										<AiFillDelete
-											style={{ cursor: 'pointer' }}
-											onClick={() => dispatch(removeItem(item.id))}
-										/>
+									<td className='text-center'>
+										<button className='btn btn-sm btn-danger rounded-2 shadow '>
+											<AiFillDelete
+												className='shadow fs-5 text-center'
+												style={{ cursor: 'pointer' }}
+												onClick={() => dispatch(removeItem(item.id))}
+											/>
+										</button>
 									</td>
 								</tr>
 							))}
