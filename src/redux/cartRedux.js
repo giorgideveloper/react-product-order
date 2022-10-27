@@ -23,10 +23,14 @@ const cartReduxSlice = createSlice({
 				state.cart = state.cart.concat(action.payload);
 			}
 		},
+		removeItem: (state, action) => {
+			const itemId = action.payload;
+			state.cart = state.cart.filter(item => item.id !== itemId);
+		},
 	},
 });
 
 // Action creators are generated for each case reducer function
 
-export const { addProduct } = cartReduxSlice.actions;
+export const { addProduct, removeItem } = cartReduxSlice.actions;
 export default cartReduxSlice.reducer;

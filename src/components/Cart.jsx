@@ -4,8 +4,11 @@ import Table from 'react-bootstrap/Table';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useSelector } from 'react-redux';
+import { removeItem } from '../redux/cartRedux';
+import { useDispatch } from 'react-redux';
 
 function Cart() {
+	const dispatch = useDispatch();
 	const cart = useSelector(state => state.cart.cart);
 	const total = cart.map(item => item.price * item.qty);
 
@@ -13,6 +16,12 @@ function Cart() {
 		return numbers.reduce((first, second) => {
 			return first + second;
 		}, 0);
+	};
+	const handleDelete = id => {
+		console.log(id);
+		const myCart = cart.filter(item => item.id !== id);
+
+		console.log(myCart);
 	};
 	return (
 		<>
@@ -48,14 +57,17 @@ function Cart() {
 						</thead>
 						<tbody>
 							{cart.map(item => (
-								<tr key={item.id}>
+								<tr key={item.id} className='text-center'>
 									<td>{item.id}</td>
 									<td>{item.name}</td>
 									<td>${item.price}</td>
 									<td>{item.qty}</td>
 									<td>${(item.price * item.qty).toFixed(2)}</td>
 									<td>
-										<AiFillDelete />
+										<AiFillDelete
+											style={{ cursor: 'pointer' }}
+											onClick={() => dispatch(removeItem(item.id))}
+										/>
 									</td>
 								</tr>
 							))}
@@ -63,7 +75,7 @@ function Cart() {
 					</Table>
 				</div>
 				<div className='card-footer bg-white'>
-					<Row>
+					<Row className='text-center'>
 						<Col md='4' className='my-2'>
 							<label htmlFor='tax'> Tax %</label>
 							<input
