@@ -28,6 +28,9 @@ function Cart() {
 	const cancelProductToCard = item => {
 		dispatch(cancelProduct({ ...item, qty: 1 }));
 	};
+	const taxPercent = event => {
+		console.log(event.target.value);
+	};
 	return (
 		<>
 			<div
@@ -116,6 +119,8 @@ function Cart() {
 								type='number'
 								step='.01'
 								placeholder='0.00'
+								defaultValue={10}
+								onChange={taxPercent}
 							/>
 						</Col>
 						<Col md='4' className='my-2'>
