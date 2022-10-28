@@ -16,8 +16,8 @@ function Products() {
 		dispatch(getProductsRedux());
 	}, [dispatch]);
 
-	const addProductToCard = () => {
-		toast('warning', 'Product add');
+	const addProductToCard = item => {
+		dispatch(addProduct({ ...item, qty: 1 }));
 	};
 
 	return (

@@ -8,7 +8,7 @@ import Table from 'react-bootstrap/Table';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useSelector } from 'react-redux';
-import { addProduct, cancelProduct, removeItem } from '../redux/cartRedux';
+import { decrement, increment, removeItem } from '../redux/cartRedux';
 import { useDispatch } from 'react-redux';
 import { Badge } from 'react-bootstrap';
 
@@ -21,12 +21,6 @@ function Cart() {
 		return numbers.reduce((first, second) => {
 			return first + second;
 		}, 0);
-	};
-	const addProductToCard = item => {
-		dispatch(addProduct({ ...item, qty: 1 }));
-	};
-	const cancelProductToCard = item => {
-		dispatch(cancelProduct({ ...item, qty: 1 }));
 	};
 	const taxPercent = event => {
 		console.log(event.target.value);
@@ -77,12 +71,11 @@ function Cart() {
 											<button className='btn btn-sm btn-secondary px-1'>
 												<AiOutlineMinusCircle
 													className='fs-5'
-													onClick={() => cancelProductToCard(item)}
+													onClick={() => dispatch(decrement(item.id))}
 												/>
 											</button>
 											<input
 												type='number'
-												min='1'
 												className='form-control py-0 qty-input text-center'
 												disabled
 												value={item.qty}
@@ -90,7 +83,7 @@ function Cart() {
 											<button className='btn btn-sm btn-secondary px-1'>
 												<AiOutlinePlusCircle
 													className='fs-5'
-													onClick={() => addProductToCard(item)}
+													onClick={() => dispatch(increment(item.id))}
 												/>
 											</button>
 										</div>
