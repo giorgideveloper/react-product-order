@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getProductsRedux } from '../redux/productsRedux';
 import { useEffect } from 'react';
 import { addProduct } from '../redux/cartRedux';
+import toast from '../helper/toast';
 
 function Products() {
 	const myProducts = useSelector(state => state.products.products);
@@ -15,8 +16,8 @@ function Products() {
 		dispatch(getProductsRedux());
 	}, [dispatch]);
 
-	const addProductToCard = item => {
-		dispatch(addProduct({ ...item, qty: 1 }));
+	const addProductToCard = () => {
+		toast('warning', 'Product add');
 	};
 
 	return (
