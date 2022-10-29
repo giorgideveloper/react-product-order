@@ -39,7 +39,7 @@ function Cart() {
 						<CiShoppingBasket style={{ fontSize: '1.5em', color: 'red' }} />
 						Cart
 						<Badge bg='success' className='ms-2 shadow-sm rounded-4'>
-							Item
+							Item {total.length}
 						</Badge>
 					</h3>
 				</div>
@@ -51,61 +51,67 @@ function Cart() {
 						overflow: 'auto',
 					}}
 				>
-					<p className='text-center fw-bold mt-5 fs-3 '>items in cart!</p>
-					{/* Cart table */}
-					<Table striped bordered hover variant='light'>
-						<thead>
-							<tr>
-								<th>#</th>
-								<th>Name</th>
-								<th>Price</th>
-								<th>Qty</th>
-								<th>Subtotal</th>
-								<th>Action</th>
-							</tr>
-						</thead>
-						<tbody>
-							{cart.map(item => (
-								<tr key={item.id} className='text-center'>
-									<td>{item.id}</td>
-									<td>{item.name}</td>
-									<td>${item.price}</td>
-									<td className='text-center w-25'>
-										<div className='input-group'>
-											<button className='btn btn-sm btn-secondary px-1'>
-												<AiOutlineMinusCircle
-													className='fs-5'
-													onClick={() => dispatch(decrement(item.id))}
-												/>
-											</button>
-											<input
-												type='number'
-												className='form-control py-0 qty-input text-center'
-												disabled
-												value={item.qty}
-											/>
-											<button className='btn btn-sm btn-secondary px-1'>
-												<AiOutlinePlusCircle
-													className='fs-5'
-													onClick={() => dispatch(increment(item.id))}
-												/>
-											</button>
-										</div>
-									</td>
-									<td>${(item.price * item.qty).toFixed(2)}</td>
-									<td className='text-center'>
-										<button className='btn btn-sm btn-danger rounded-2 shadow '>
-											<AiFillDelete
-												className='shadow fs-5 text-center'
-												style={{ cursor: 'pointer' }}
-												onClick={() => dispatch(removeItem(item.id))}
-											/>
-										</button>
-									</td>
+					{total.length === 0 ? (
+						<p className='text-center fw-bold mt-5 fs-3 '>No items in cart!</p>
+					) : (
+						<Table striped bordered hover variant='light'>
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>Name</th>
+									<th>Price</th>
+									<th>Qty</th>
+									<th>Subtotal</th>
+									<th>Action</th>
 								</tr>
-							))}
-						</tbody>
-					</Table>
+							</thead>
+							<tbody>
+								{cart.map(item => (
+									<tr key={item.id} className='text-center'>
+										<td>{item.id}</td>
+										<td>{item.name}</td>
+										<td>${item.price}</td>
+										<td className='text-center w-25'>
+											<div className='input-group'>
+												<button className='btn btn-sm btn-secondary px-1'>
+													<AiOutlineMinusCircle
+														className='fs-5'
+														onClick={() => dispatch(decrement(item.id))}
+													/>
+												</button>
+												<input
+													type='number'
+													className='form-control py-0 qty-input text-center'
+													disabled
+													value={item.qty}
+												/>
+												<button className='btn btn-sm btn-secondary px-1'>
+													<AiOutlinePlusCircle
+														className='fs-5'
+														onClick={() => dispatch(increment(item.id))}
+													/>
+												</button>
+											</div>
+										</td>
+										<td>${(item.price * item.qty).toFixed(2)}</td>
+										<td className='text-center'>
+											<button
+												className='btn btn-sm btn-danger rounded-2 shadow '
+												onClick={() => dispatch(removeItem(item.id))}
+											>
+												<AiFillDelete
+													className='shadow fs-5 text-center'
+													style={{ cursor: 'pointer' }}
+												/>
+											</button>
+										</td>
+									</tr>
+								))}
+							</tbody>
+						</Table>
+					)}
+					{/* Cart table */}
+					{/* Cart table */}
 				</div>
 				{/* cart inputs */}
 				<div className='card-footer bg-white'>
