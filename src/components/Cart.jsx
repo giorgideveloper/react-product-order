@@ -11,20 +11,28 @@ import { useSelector } from 'react-redux';
 import { decrement, increment, removeItem } from '../redux/cartRedux';
 import { useDispatch } from 'react-redux';
 import { Badge } from 'react-bootstrap';
+import { useState } from 'react';
 
 function Cart() {
+	const [tax, setTax] = useState(null);
+	const [discount, setDiscount] = useState(null);
+	const [shipping, setShipping] = useState(null);
+
 	const dispatch = useDispatch();
+
 	const cart = useSelector(state => state.cart.cart);
-	const total = cart.map(item => item.price * item.qty);
+	let total = cart.map(item => item.price * item.qty);
 
 	const sum = numbers => {
 		return numbers.reduce((first, second) => {
-			return first + second;
+			return first + second + tax - discount + shipping;
 		}, 0);
 	};
-	const taxPercent = event => {
-		console.log(event.target.value);
-	};
+	// const taxPercent = event => {
+	// 	if (event.target.value > 0) {
+	// 		return (Number(event.target.value) * 60) / 100 + Number(total);
+	// 	}
+	// };
 	return (
 		<>
 			<div
@@ -36,7 +44,7 @@ function Cart() {
 						<CiShoppingBasket style={{ fontSize: '1.5em', color: 'red' }} />
 						Cart
 						<Badge bg='success' className='ms-2 shadow-sm rounded-4'>
-							New
+							Item
 						</Badge>
 					</h3>
 				</div>
@@ -113,7 +121,9 @@ function Cart() {
 								step='.01'
 								placeholder='0.00'
 								defaultValue={10}
-								onChange={taxPercent}
+								onChange={e =>
+									setTax(Number(e.target.value) * 0.6) / 100 + Number(total)
+								}
 							/>
 						</Col>
 						<Col md='4' className='my-2'>
@@ -123,6 +133,10 @@ function Cart() {
 								type='number'
 								step='.01'
 								placeholder='0.00'
+								onChange={e =>
+									setDiscount(Number(e.target.value) * 0.1) / 100 +
+									Number(total)
+								}
 							/>
 						</Col>
 						<Col md='4' className='my-2'>
@@ -132,6 +146,7 @@ function Cart() {
 								type='number'
 								step='.01'
 								placeholder='0.00'
+								onChange={e => setShipping(Number(e.target.value))}
 							/>
 						</Col>
 						<h4>Total Price: ${sum(total).toFixed(2)}</h4>

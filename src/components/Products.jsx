@@ -6,7 +6,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getProductsRedux } from '../redux/productsRedux';
 import { useEffect } from 'react';
 import { addProduct } from '../redux/cartRedux';
-import toast from '../helper/toast';
 
 function Products() {
 	const myProducts = useSelector(state => state.products.products);
