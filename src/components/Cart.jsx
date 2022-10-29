@@ -14,25 +14,20 @@ import { Badge } from 'react-bootstrap';
 import { useState } from 'react';
 
 function Cart() {
+	const dispatch = useDispatch();
 	const [tax, setTax] = useState(null);
 	const [discount, setDiscount] = useState(null);
 	const [shipping, setShipping] = useState(null);
-
-	const dispatch = useDispatch();
-
+	// Get product
 	const cart = useSelector(state => state.cart.cart);
 	let total = cart.map(item => item.price * item.qty);
-
+	// Sum price
 	const sum = numbers => {
 		return numbers.reduce((first, second) => {
 			return first + second + tax - discount + shipping;
 		}, 0);
 	};
-	// const taxPercent = event => {
-	// 	if (event.target.value > 0) {
-	// 		return (Number(event.target.value) * 60) / 100 + Number(total);
-	// 	}
-	// };
+
 	return (
 		<>
 			<div
@@ -57,6 +52,7 @@ function Cart() {
 					}}
 				>
 					<p className='text-center fw-bold mt-5 fs-3 '>items in cart!</p>
+					{/* Cart table */}
 					<Table striped bordered hover variant='light'>
 						<thead>
 							<tr>
@@ -111,6 +107,7 @@ function Cart() {
 						</tbody>
 					</Table>
 				</div>
+				{/* cart inputs */}
 				<div className='card-footer bg-white'>
 					<Row className='text-center'>
 						<Col md='4' className='my-2'>
@@ -120,7 +117,6 @@ function Cart() {
 								type='number'
 								step='.01'
 								placeholder='0.00'
-								defaultValue={10}
 								onChange={e =>
 									setTax(Number(e.target.value) * 0.6) / 100 + Number(total)
 								}

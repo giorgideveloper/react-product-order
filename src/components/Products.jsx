@@ -50,11 +50,11 @@ function Products() {
 								style={{ cursor: 'pointer' }}
 							>
 								<div
-									className='card h-100 rounded border-0 shadow product '
+									className='card h-100 rounded border-0 shadow product'
 									onClick={() => addProductToCard(item)}
 								>
 									{' '}
-									<img src={item.image} alt='card' className='w-100' />
+									<img src={item.image} alt='card-img' className='w-100' />
 									<span className='badge bg-primary rounded-pill shadow position-absolute m-2'>
 										{' '}
 										$ {item.price}
