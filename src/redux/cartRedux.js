@@ -27,13 +27,16 @@ const cartReduxSlice = createSlice({
 				}
 				return item;
 			});
+			toast('success', 'Add item');
 		},
 		decrement: (state, action) => {
 			state.cart = state.cart.map(item => {
 				if (item.id === action.payload) {
 					if (item.qty > 1) {
+						toast('success', 'decrement item');
 						return { ...item, qty: item.qty - 1 };
 					}
+
 					return item;
 				}
 				return item;
@@ -45,11 +48,15 @@ const cartReduxSlice = createSlice({
 			state.cart = state.cart.filter(item => item.id !== itemId);
 			toast('success', 'Delete item');
 		},
+		resetItem: (state, action) => {
+			state.cart = state.cart = [];
+			toast('success', 'Reset item');
+		},
 	},
 });
 
 // Action creators are generated for each case reducer function
 
-export const { addProduct, increment, decrement, removeItem } =
+export const { addProduct, increment, decrement, removeItem, resetItem } =
 	cartReduxSlice.actions;
 export default cartReduxSlice.reducer;

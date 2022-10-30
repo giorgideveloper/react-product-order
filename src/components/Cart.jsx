@@ -8,10 +8,17 @@ import Table from 'react-bootstrap/Table';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useSelector } from 'react-redux';
-import { decrement, increment, removeItem } from '../redux/cartRedux';
+import {
+	decrement,
+	increment,
+	removeItem,
+	resetItem,
+} from '../redux/cartRedux';
 import { useDispatch } from 'react-redux';
 import { Badge } from 'react-bootstrap';
 import { useState } from 'react';
+import { GrPowerReset } from 'react-icons/gr';
+import { FaFileInvoiceDollar } from 'react-icons/fa';
 
 function Cart() {
 	const dispatch = useDispatch();
@@ -20,7 +27,8 @@ function Cart() {
 	const [shipping, setShipping] = useState(null);
 	// Get product
 	const cart = useSelector(state => state.cart.cart);
-	let total = cart.map(item => item.price * item.qty);
+	const total = cart.map(item => item.price * item.qty);
+
 	// Sum price
 	const sum = numbers => {
 		return numbers.reduce((first, second) => {
@@ -110,7 +118,7 @@ function Cart() {
 							</tbody>
 						</Table>
 					)}
-					{/* Cart table */}
+
 					{/* Cart table */}
 				</div>
 				{/* cart inputs */}
@@ -152,6 +160,23 @@ function Cart() {
 							/>
 						</Col>
 						<h4>Total Price: ${sum(total).toFixed(2)}</h4>
+					</Row>
+					<Row>
+						<Col md='12' className='my-2 text-center '>
+							<div className='pl-2'>
+								<button
+									className='btn btn-sm btn-danger rounded-2 shadow'
+									onClick={() => dispatch(resetItem())}
+								>
+									<GrPowerReset className='shadow fs-6 text-center' /> Reset
+								</button>
+
+								<button className='btn btn-sm btn-primary rounded-2 shadow'>
+									<FaFileInvoiceDollar className='shadow fs-6 text-center' />{' '}
+									Invoice
+								</button>
+							</div>
+						</Col>
 					</Row>
 				</div>
 			</div>
