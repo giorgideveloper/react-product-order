@@ -15,7 +15,7 @@ import {
 	resetItem,
 } from '../redux/cartRedux';
 import { useDispatch } from 'react-redux';
-import { Badge } from 'react-bootstrap';
+import { Badge, Modal } from 'react-bootstrap';
 import { useState } from 'react';
 import { GrPowerReset } from 'react-icons/gr';
 import { FaFileInvoiceDollar } from 'react-icons/fa';
@@ -25,17 +25,27 @@ function Cart() {
 	const [tax, setTax] = useState(null);
 	const [discount, setDiscount] = useState(null);
 	const [shipping, setShipping] = useState(null);
+	// Modal
+	const [show, setShow] = useState(false);
+	const handleClose = () => setShow(false);
+	const handleShow = () => setShow(true);
 	// Get product
 	const cart = useSelector(state => state.cart.cart);
 	const total = cart.map(item => item.price * item.qty);
 
+	// total sum
+	const totalSum = numbers => {
+		return numbers.reduce((first, second) => {
+			return first + second;
+		}, 0);
+	};
 	// Sum price
 	const sum = numbers => {
 		return numbers.reduce((first, second) => {
-			return first + second + tax - discount + shipping;
+			return first + second + (tax * 0.6) / 100 - discount + shipping;
 		}, 0);
 	};
-
+	console.log(tax);
 	return (
 		<>
 			<div
@@ -131,9 +141,7 @@ function Cart() {
 								type='number'
 								step='.01'
 								placeholder='0.00'
-								onChange={e =>
-									setTax(Number(e.target.value) * 0.6) / 100 + Number(total)
-								}
+								onChange={e => setTax(Number(e.target.value))}
 							/>
 						</Col>
 						<Col md='4' className='my-2'>
@@ -171,10 +179,59 @@ function Cart() {
 									<GrPowerReset className='shadow fs-6 text-center' /> Reset
 								</button>
 
-								<button className='btn btn-sm btn-primary rounded-2 shadow'>
+								<button
+									className='btn btn-sm btn-primary rounded-2 shadow'
+									onClick={handleShow}
+								>
 									<FaFileInvoiceDollar className='shadow fs-6 text-center' />{' '}
 									Invoice
 								</button>
+								<Modal show={show} onHide={handleClose}>
+									<Modal.Header closeButton>
+										<Modal.Title>Modal heading</Modal.Title>
+									</Modal.Header>
+									<Modal.Body>
+										<ul className='list-group'>
+											<li className='list-group-item d-flex justify-content-between align-items-start'>
+												<div className='ms-2 me-auto'> items in cart</div>
+												<span className='badge bg-success text-withe   rounded-pill'>
+													items {total.length}
+												</span>{' '}
+											</li>
+											<li className='list-group-item d-flex justify-content-between align-items-start'>
+												<div className='ms-2 me-auto'> tax</div>
+												<span className='badge text-black   rounded-pill'>
+													{tax}%
+												</span>{' '}
+											</li>
+											<li className='list-group-item d-flex justify-content-between align-items-start'>
+												<div className='ms-2 me-auto'> discount</div>
+												<span className='badge text-black    rounded-pill'>
+													{discount}%
+												</span>{' '}
+											</li>
+											<li className='list-group-item d-flex justify-content-between align-items-start'>
+												<div className='ms-2 me-auto'> shipping</div>
+												<span className='badge text-black   rounded-pill'>
+													${shipping}
+												</span>{' '}
+											</li>
+											<li className='list-group-item d-flex justify-content-between align-items-start'>
+												<div className='ms-2 me-auto'> total</div>
+												<span className='badge text-black    rounded-pill'>
+													{totalSum(total).toFixed(2)}
+												</span>{' '}
+											</li>
+
+											<li className='list-group-item d-flex justify-content-between align-items-start'>
+												<div className='ms-2 me-auto'>Total price</div>
+												<span className='badge bg-primary  rounded-pill'>
+													{sum(total).toFixed(2)}
+												</span>{' '}
+											</li>
+										</ul>
+									</Modal.Body>
+								</Modal>
 							</div>
 						</Col>
 					</Row>

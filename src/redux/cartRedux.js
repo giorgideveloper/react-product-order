@@ -49,8 +49,12 @@ const cartReduxSlice = createSlice({
 			toast('success', 'Delete item');
 		},
 		resetItem: (state, action) => {
-			state.cart = state.cart = [];
-			toast('success', 'Reset item');
+			if (state.cart.length > 0) {
+				state.cart = state.cart = [];
+				toast('success', 'Reset item');
+			} else {
+				toast('warning', 'No items in cart! ');
+			}
 		},
 	},
 });
