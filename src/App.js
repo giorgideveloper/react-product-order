@@ -8,10 +8,10 @@ function App() {
 		<div className='App'>
 			<Container fluid className='pt-3 my-3'>
 				<Row>
-					<Col xs sm='12' md='5'>
+					<Col sm='12' md='5'>
 						<Cart />
 					</Col>
-					<Col xs sm='12' md='7'>
+					<Col sm='12' md='7'>
 						<Products />
 					</Col>
 				</Row>
