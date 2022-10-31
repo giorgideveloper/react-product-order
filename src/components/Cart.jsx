@@ -22,9 +22,9 @@ import { FaFileInvoiceDollar } from 'react-icons/fa';
 
 function Cart() {
 	const dispatch = useDispatch();
-	const [tax, setTax] = useState(null);
-	const [discount, setDiscount] = useState(null);
-	const [shipping, setShipping] = useState(null);
+	const [tax, setTax] = useState(0);
+	const [discount, setDiscount] = useState(0);
+	const [shipping, setShipping] = useState(0);
 	// Modal
 	const [show, setShow] = useState(false);
 	const handleClose = () => setShow(false);
@@ -207,7 +207,7 @@ function Cart() {
 											<li className='list-group-item d-flex justify-content-between align-items-start'>
 												<div className='ms-2 me-auto'> discount</div>
 												<span className='badge text-black    rounded-pill'>
-													{discount}%
+													{discount.toFixed(2)}%
 												</span>{' '}
 											</li>
 											<li className='list-group-item d-flex justify-content-between align-items-start'>
